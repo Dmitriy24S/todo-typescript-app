@@ -48,6 +48,8 @@ const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
               todoItem={todoItem}
               handleCheckmark={handleCheckmark}
               handleDeleteTodo={handleDeleteTodo}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
             />
           );
         })}

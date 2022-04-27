@@ -9,7 +9,7 @@ type TodoItemType = {
 type ModalProps = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDeleteTodo: (id: number) => void;
-  id?: number | null | undefined;
+  id?: number;
   setTodoItems?: React.Dispatch<React.SetStateAction<TodoItemType[]>>;
   children: string;
 };
@@ -21,14 +21,15 @@ export const Modal = ({
   setTodoItems,
   children,
 }: ModalProps) => {
-  const handleConfirmDelete = (id?: number | null | undefined) => {
+  const handleConfirmDelete = (id: number | null | undefined) => {
     // if recieve todo id - means delete spcific todo
-    if (id) {
+    if (id || id === 0) {
       handleDeleteTodo(id);
-    }
-    // if recieve set state - means delete all todos
-    if (setTodoItems) {
-      setTodoItems([]);
+    } else {
+      // if recieve set state - means delete all todos
+      if (setTodoItems) {
+        setTodoItems([]);
+      }
     }
     setIsModalOpen(false);
   };
@@ -61,7 +62,7 @@ export const Modal = ({
         <div className="modal-button-container flex justify-around mt-8">
           {/* confirm */}
           <button
-            className="block bg-red-500 text-white py-3 px-4 rounded-md w-24 hover:bg-red-600"
+            className="block bg-red-500 text-white py-3 px-4 rounded-md w-24 mr-4 hover:bg-red-600"
             onClick={() => handleConfirmDelete(id)}
           >
             Confirm

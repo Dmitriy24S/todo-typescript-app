@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import { Modal } from "./Modal";
+
 type TodoItemType = {
   id: number;
   todoText: string;
@@ -8,6 +11,8 @@ type TodoItemProps = {
   todoItem: TodoItemType;
   handleCheckmark: (id: number) => void;
   handleDeleteTodo: (id: number) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const TodoItem = ({
@@ -15,6 +20,8 @@ const TodoItem = ({
   handleCheckmark,
   handleDeleteTodo,
 }: TodoItemProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <li
       className={`todo-item flex items-center p-4 px-8 ${
@@ -46,10 +53,20 @@ const TodoItem = ({
       </label>
       <button
         className="inline-block bg-red-600 text-white px-4 py-2 rounded ml-auto hover:bg-red-500"
-        onClick={() => handleDeleteTodo(todoItem.id)}
+        onClick={() => setIsModalOpen(true)}
       >
         Delete
       </button>
+      {/* Modal - confirm todo delete */}
+      {isModalOpen && (
+        <Modal
+          setIsModalOpen={setIsModalOpen}
+          handleDeleteTodo={handleDeleteTodo}
+          id={todoItem.id}
+        >
+          Delete this todo?
+        </Modal>
+      )}
     </li>
   );
 };
