@@ -1,4 +1,6 @@
+import { useState } from "react";
 import TodoItem from "../components/TodoItem";
+import { Modal } from "./Modal";
 
 type TodoItemType = {
   id: number;
@@ -12,6 +14,8 @@ type TodoListProps = {
 };
 
 const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const remainingTodos = todoItems.filter((todo) => !todo.complete).length;
 
   const handleCheckmark = (id: number) => {
@@ -48,7 +52,26 @@ const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
           );
         })}
       </ul>
-      <div className="todo-remaining mt-6 text-slate-400 text-sm">{`${remainingTodos} todos left`}</div>
+      {/* todo list footer */}
+      <div className="todo-list-footer flex justify-between mt-6 text-slate-400 text-sm">
+        <div className="todo-remaining  ">{`${remainingTodos} todos left`}</div>
+        <button
+          className="hover:text-red-600"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Clear all
+        </button>
+      </div>
+      {/* modal - confirm delete all todos */}
+      {isModalOpen && (
+        <Modal
+          setIsModalOpen={setIsModalOpen}
+          handleDeleteTodo={handleDeleteTodo}
+          setTodoItems={setTodoItems}
+        >
+          Delete all todos?
+        </Modal>
+      )}
     </>
   );
 };
