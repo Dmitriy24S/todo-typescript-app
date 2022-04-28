@@ -36,14 +36,14 @@ export const Modal = ({
 
   // listen for ESC key to close modal
   useEffect(() => {
-    const close = (e: KeyboardEvent) => {
+    const closeModal = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsModalOpen(false);
       }
     };
-    window.addEventListener("keydown", close);
+    window.addEventListener("keydown", closeModal);
     return () => {
-      window.removeEventListener("keydown", close);
+      window.removeEventListener("keydown", closeModal);
     };
   }, [setIsModalOpen]);
 

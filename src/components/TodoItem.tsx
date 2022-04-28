@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Modal } from "./Modal";
 import TodoItemButtons from "./TodoItemButtons";
 
@@ -42,6 +42,19 @@ const TodoItem = ({
     });
     setTodoItems(newTodos);
   };
+
+  // Listen for ESC key to close edit text input field
+  useEffect(() => {
+    const closeEditText = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsEditing(false);
+      }
+    };
+    window.addEventListener("keydown", closeEditText);
+    return () => {
+      window.removeEventListener("keydown", closeEditText);
+    };
+  }, []);
 
   return (
     <li
