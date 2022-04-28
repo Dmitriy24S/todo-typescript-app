@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { Modal } from "./Modal";
+import TodoItemButtons from "./TodoItemButtons";
 
 type TodoItemType = {
   id: number;
@@ -11,16 +12,36 @@ type TodoItemProps = {
   todoItem: TodoItemType;
   handleCheckmark: (id: number) => void;
   handleDeleteTodo: (id: number) => void;
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  todoItems: TodoItemType[];
+  setTodoItems: React.Dispatch<React.SetStateAction<TodoItemType[]>>;
 };
 
 const TodoItem = ({
   todoItem,
   handleCheckmark,
   handleDeleteTodo,
+  todoItems,
+  setTodoItems,
 }: TodoItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newEditedText, setNewEditedText] = useState(todoItem.todoText);
+
+  const changeTodoText = (
+    e: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) => {
+    e.preventDefault();
+    setIsEditing(!isEditing);
+    const newTodos = todoItems.map((todo) => {
+      if (todo.id === id) {
+        todo.todoText = newEditedText;
+        return todo;
+      }
+      return todo;
+    });
+    setTodoItems(newTodos);
+  };
 
   return (
     <li
@@ -28,35 +49,55 @@ const TodoItem = ({
         todoItem.complete ? "bg-green-200" : ""
       }`}
     >
-      <label
-        htmlFor={`checkbox${todoItem.id}`}
-        className="flex items-center cursor-pointer"
-      >
-        <input
-          placeholder="checkbox"
-          id={`checkbox${todoItem.id}`}
-          type="checkbox"
-          checked={todoItem.complete}
-          readOnly
-          onClick={() => {
-            handleCheckmark(todoItem.id);
-          }}
-          className="mr-4 cursor-pointer"
-        />
-        <p
-          className={
-            todoItem.complete ? "text-slate-400 line-through italic" : ""
-          }
+      {/* Todo text / edit todo text input */}
+      {isEditing ? (
+        <form onSubmit={(e) => changeTodoText(e, todoItem.id)}>
+          <input
+            placeholder="enter new todo text"
+            type="text"
+            name="text-edit"
+            id="text-edit"
+            value={newEditedText}
+            onChange={(e) => setNewEditedText(e.target.value)}
+            className="edit-text-input border-blue-300 border-2 sm:w-auto sm:pl-7"
+            autoFocus
+            autoComplete="off"
+          />
+        </form>
+      ) : (
+        <label
+          htmlFor={`checkbox${todoItem.id}`}
+          className="flex items-center cursor-pointer"
         >
-          {todoItem.todoText}
-        </p>
-      </label>
-      <button
-        className="inline-block bg-red-600 text-white px-4 py-2 rounded ml-auto hover:bg-red-500"
-        onClick={() => setIsModalOpen(true)}
-      >
-        Delete
-      </button>
+          <input
+            placeholder="checkbox"
+            id={`checkbox${todoItem.id}`}
+            type="checkbox"
+            checked={todoItem.complete}
+            readOnly
+            onClick={() => {
+              handleCheckmark(todoItem.id);
+            }}
+            className="mr-4 cursor-pointer"
+          />
+          <p
+            className={
+              todoItem.complete ? "text-slate-400 line-through italic" : ""
+            }
+          >
+            {todoItem.todoText}
+          </p>
+        </label>
+      )}
+      {/* Todo item buttons edit / delete */}
+      <TodoItemButtons
+        setIsModalOpen={setIsModalOpen}
+        setIsEditing={setIsEditing}
+        isEditing={isEditing}
+        todoItem={todoItem}
+        setNewEditedText={setNewEditedText}
+        changeTodoText={changeTodoText}
+      />
       {/* Modal - confirm todo delete */}
       {isModalOpen && (
         <Modal

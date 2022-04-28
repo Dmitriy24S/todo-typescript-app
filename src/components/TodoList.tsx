@@ -40,7 +40,7 @@ const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
 
   return (
     <>
-      <ul className="todo-items-list divide-y divide-blue-200 rounded-lg overflow-hidden">
+      <ul className="todo-items-list divide-y divide-blue-200 rounded-lg">
         {todoItems.map((todoItem, index) => {
           return (
             <TodoItem
@@ -48,13 +48,13 @@ const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
               todoItem={todoItem}
               handleCheckmark={handleCheckmark}
               handleDeleteTodo={handleDeleteTodo}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
+              todoItems={todoItems}
+              setTodoItems={setTodoItems}
             />
           );
         })}
       </ul>
-      {/* todo list footer */}
+      {/* Todo list footer */}
       <div className="todo-list-footer flex justify-between mt-6 text-slate-400 text-sm">
         <div className="todo-remaining  ">{`${remainingTodos} todos left`}</div>
         <button
@@ -64,7 +64,7 @@ const TodoList = ({ todoItems, setTodoItems }: TodoListProps) => {
           Clear all
         </button>
       </div>
-      {/* modal - confirm delete all todos */}
+      {/* Modal - confirm delete all todos */}
       {isModalOpen && (
         <Modal
           setIsModalOpen={setIsModalOpen}
