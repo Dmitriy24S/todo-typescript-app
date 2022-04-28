@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 type TodoItemType = {
   id: number;
@@ -47,8 +47,40 @@ export const Modal = ({
     };
   }, [setIsModalOpen]);
 
+  // Trap focus in modal
+  const modalRef = useRef<any>(null); // ! any ?
+
+  const trapFocusInModal = (e: any) => {
+    // ! any ?
+    if (e.key !== "Tab") return;
+
+    const focusableModalElements = modalRef.current.querySelectorAll(
+      "a[href], button:not([disabled]), textarea, input, select"
+    );
+
+    const firstElement = focusableModalElements[0];
+    const lastElement =
+      focusableModalElements[focusableModalElements.length - 1];
+
+    // if going forward by pressing tab and lastElement is active shift focus to first focusable element
+    if (!e.shiftKey && document.activeElement === lastElement) {
+      firstElement.focus();
+      return e.preventDefault();
+    }
+
+    // if going backward by pressing tab and firstElement is active shift focus to last focusable element
+    if (e.shiftKey && document.activeElement === firstElement) {
+      lastElement.focus();
+      e.preventDefault();
+    }
+  };
+
   return (
-    <div className="modal-container absolute top-0 left-0 w-full h-full z-10 ">
+    <div
+      className="modal-container absolute top-0 left-0 w-full h-full z-10 "
+      onKeyDown={trapFocusInModal}
+      ref={modalRef}
+    >
       {/* modal backdrop with click on it to close modal */}
       <div
         className="modal-backdrop bg-neutral-800 opacity-70 w-full h-full fixed inset-0"
@@ -59,7 +91,10 @@ export const Modal = ({
         {/* modal question */}
         <div className="modal-header text-center">{children}</div>
         {/* confirm / cancel buttons - container */}
-        <div className="modal-button-container flex justify-around mt-8">
+        <div
+          className="modal-button-container flex justify-around mt-8"
+          // ref={modalRef}
+        >
           {/* confirm */}
           <button
             className="block bg-red-500 text-white py-3 px-4 rounded-md w-24 mr-4 hover:bg-red-600"
