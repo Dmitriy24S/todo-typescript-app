@@ -66,6 +66,7 @@ const TodoItem = ({
       {isEditing ? (
         <form onSubmit={(e) => changeTodoText(e, todoItem.id)}>
           <input
+            aria-label="enter new todo text"
             placeholder="enter new todo text"
             type="text"
             name="text-edit"
@@ -87,16 +88,15 @@ const TodoItem = ({
             id={`checkbox${todoItem.id}`}
             type="checkbox"
             checked={todoItem.complete}
-            readOnly
-            onClick={() => {
+            onChange={() => {
               handleCheckmark(todoItem.id);
             }}
             className="mr-4 cursor-pointer"
           />
           <p
-            className={
+            className={`break-all pr-2 ${
               todoItem.complete ? "text-slate-400 line-through italic" : ""
-            }
+            }`}
           >
             {todoItem.todoText}
           </p>
