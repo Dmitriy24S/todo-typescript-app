@@ -1,4 +1,4 @@
-import React, { FormEvent, MouseEvent, Dispatch, SetStateAction } from "react";
+import { FormEvent, MouseEvent, Dispatch, SetStateAction } from "react";
 import { MdDeleteForever, MdOutlineEditNote } from "react-icons/md";
 import { RiSave3Fill } from "react-icons/ri";
 import Tooltip from "./Tooltip";

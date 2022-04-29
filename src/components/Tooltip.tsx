@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { isMobile } from "react-device-detect";
 
 type TooltipProps = {
   text: string;
@@ -18,7 +19,9 @@ const Tooltip = ({ children, text, ...rest }: TooltipProps) => {
       {/* button content */}
       <div
         className="flex items-center"
-        onMouseEnter={() => setShow(true)}
+        // onMouseEnter={() => setShow(true)}
+        // onMouseEnter={() => (isMobile ? setShow(false) : setShow(true))}
+        onMouseEnter={() => !isMobile && setShow(true)}
         onMouseLeave={() => setShow(false)}
         // {...rest}
       >

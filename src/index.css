@@ -29,6 +29,11 @@
   opacity: 100;
 }
 
+/* input show box shadow on iOS Mobile browser - fix ? */
+input {
+  -webkit-appearance: none;
+}
+
 /* Edit text */
 .edit-text-input {
   width: 90px;
