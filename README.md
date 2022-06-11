@@ -1,4 +1,15 @@
-# Getting Started with Create React App
+# Todo Typescript App
+
+![Design preview for Todo app](./preview.png)
+
+## Welcome 
+
+Todo typescript app. Created with React and Tailwind CSS.
+
+[Live Demo](https://dmitriy24s.github.io/todo-typescript-app/) 👈
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
